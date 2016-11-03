@@ -45,7 +45,7 @@
     {
       "type": "vagrant",
       "compression_level": "9",
-      "output": "bin/debian-golang_{{.Provider}}.box",
+      "output": "bin/jessie-golang_{{.Provider}}.box",
       "only": ["virtualbox-iso"]
     }
   ],
@@ -60,9 +60,15 @@
         "scripts/sudoers.sh",
         "scripts/vagrant.sh",
         "scripts/vbaddguest.sh",
+        "scripts/puppet.sh",
         "scripts/cleanup.sh"
       ],
       "only": ["virtualbox-iso"]
+    },
+    {
+      "type": "puppet-masterless",
+      "manifest_file": "puppet/init.pp",
+      "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}}{{if .Sudo}} sudo -E {{end}}/opt/puppetlabs/bin/puppet apply  --verbose --modulepath='{{.ModulePath}}' {{if ne .HieraConfigPath \"\"}}--hiera_config='{{.HieraConfigPath}}' {{end}} {{if ne .ManifestDir \"\"}}--manifestdir='{{.ManifestDir}}' {{end}} --detailed-exitcodes {{.ManifestFile}}"
     }
   ]
 }
