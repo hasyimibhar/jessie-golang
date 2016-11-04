@@ -54,3 +54,5 @@ export GOPATH PATH
 }
 
 include golang
+
+package { 'vim': }
